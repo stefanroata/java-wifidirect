@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- Created by Sarthi Technology-->
+    <!-- www.youtube.com/SarthiTechnology-->
+    <!-- www.facebook.com/SarthiTechnology-->
+
+    <!-- My Dear Friends, Thanks for your kind support for my youtube channel.-->
+
+    <!-- Please make sure that you are using Relative Layout for below codes-->
+
+
+    <Button
+        android:id="@+id/onOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="55dp"
+        android:text="@string/wifi_on" />
+
+    <Button
+        android:id="@+id/discover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/onOff"
+        android:layout_alignBottom="@+id/onOff"
+        android:layout_centerHorizontal="true"
+        android:text="@string/discover" />
+
+    <ListView
+        android:id="@+id/peerListView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/onOff"
+        android:layout_marginTop="25dp"
+        android:background="@android:color/holo_orange_light" />
+
+    <TextView
+        android:id="@+id/readMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/peerListView"
+        android:layout_marginTop="31dp"
+        android:text="@string/message"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/writeMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/sendButton"
+        android:autofillHints="write your message here"
+        android:ems="10"
+        android:inputType="textPersonName"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/send" />
+
+    <TextView
+        android:id="@+id/connectionStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/connection_status"
+        android:textAlignment="center"
+        android:textColor="#0277BD"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+
+
+
+
+
+
+
+
+
+</RelativeLayout>
