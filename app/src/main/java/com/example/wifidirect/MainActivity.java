@@ -8,12 +8,17 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 
 
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
             if (peers.size() == 0){
                 Toast.makeText(getApplicationContext(), "No Devices Found", Toast.LENGTH_SHORT).show();
-
             }
         }
     };
@@ -110,7 +115,41 @@ public class MainActivity extends AppCompatActivity {
                 connectionStatus.setText("Discovery Starting Failed!");
             }
         }));
+
+        listView.setOnItemClickListener((adapterView, view, i, l) -> {
+            final WifiP2pDevice device = deviceArray[i];
+            WifiP2pConfig config = new WifiP2pConfig();
+            // make host
+            config.groupOwnerIntent = 15;
+            config.deviceAddress = device.deviceAddress;
+
+            mManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(getApplicationContext(), "Connected to "+device.deviceName, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(int i) {
+                    Toast.makeText(getApplicationContext(), "Not Connected!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
+
+    WifiP2pManager.ConnectionInfoListener connectionInfoListener = new WifiP2pManager.ConnectionInfoListener() {
+        @Override
+        public void onConnectionInfoAvailable(WifiP2pInfo wifiP2pInfo) {
+            final InetAddress groupOwnerAddress = wifiP2pInfo.groupOwnerAddress;
+            Log.v("group formed? ", ""+wifiP2pInfo.groupFormed);
+            if (wifiP2pInfo.groupFormed && wifiP2pInfo.isGroupOwner){
+                connectionStatus.setText("Host/Server");
+            }
+            else if (wifiP2pInfo.groupFormed){
+                connectionStatus.setText("Client");
+            }
+        }
+    };
     @Override
     protected void onResume() {
         super.onResume();
