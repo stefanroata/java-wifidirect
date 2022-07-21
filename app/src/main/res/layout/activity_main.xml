@@ -22,7 +22,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="28dp"
         android:layout_marginTop="55dp"
-        android:text="@string/wifi_on" />
+        android:text="@string/wifi_on"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/discover"
