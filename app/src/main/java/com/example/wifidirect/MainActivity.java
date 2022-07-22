@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
             config.groupOwnerIntent = 15;
             config.deviceAddress = device.deviceAddress;
 
+            /*
             mManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
                 @Override
                 public void onSuccess() {
@@ -131,15 +132,30 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(int i) {
-                    Toast.makeText(getApplicationContext(), "Not Connected!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Connect failed. Retry.", Toast.LENGTH_SHORT).show();
+                }
+            });*/
+            mManager.createGroup(mChannel, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(getApplicationContext(), "Group created!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(int reason) {
+                    Toast.makeText(getApplicationContext(), "P2P group creation failed. Retry.",
+                            Toast.LENGTH_SHORT).show();
                 }
             });
+
+
         });
     }
 
     WifiP2pManager.ConnectionInfoListener connectionInfoListener = new WifiP2pManager.ConnectionInfoListener() {
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo wifiP2pInfo) {
+            Log.d("P2P", "Received Connection info");
             final InetAddress groupOwnerAddress = wifiP2pInfo.groupOwnerAddress;
             Log.v("group formed? ", ""+wifiP2pInfo.groupFormed);
             if (wifiP2pInfo.groupFormed && wifiP2pInfo.isGroupOwner){
