@@ -19,7 +19,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
         this.mChannel = mChannel;
         this.mActivity = mActivity;
     }
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission", "SetTextI18n"})
     @Override
     public void onReceive (Context context, Intent intent){
         String action = intent.getAction();

@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-    Button btnDiscover, btnSend;
+    Button btnDiscover, btnSend, btnDisconnect;
     ListView listView;
     TextView read_msg_box, connectionStatus;
     EditText writeMsg;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private void initialWork() {
         btnDiscover = (Button) findViewById(R.id.discover);
         btnSend = (Button) findViewById(R.id.sendButton);
+        btnDisconnect = (Button) findViewById(R.id.btnDisconnect);
         listView = (ListView) findViewById(R.id.peerListView);
         read_msg_box = (TextView) findViewById(R.id.readMsg);
         connectionStatus = (TextView) findViewById(R.id.connectionStatus);
@@ -116,6 +118,29 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
+        btnDisconnect.setOnClickListener(v -> {
+            if (mManager != null && mChannel != null){
+                mManager.requestGroupInfo(mChannel, new WifiP2pManager.GroupInfoListener() {
+                    @Override
+                    public void onGroupInfoAvailable(WifiP2pGroup group) {
+                        if (group != null && mManager != null && mChannel != null){
+                            mManager.removeGroup(mChannel, new WifiP2pManager.ActionListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.d("Removed current group? ", "SUCCESS");
+                                }
+
+                                @Override
+                                public void onFailure(int reason) {
+                                    Log.d("Removed current group? ", "FAILURE - " + reason);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             final WifiP2pDevice device = deviceArray[i];
             WifiP2pConfig config = new WifiP2pConfig();
@@ -123,18 +148,6 @@ public class MainActivity extends AppCompatActivity {
             config.groupOwnerIntent = 15;
             config.deviceAddress = device.deviceAddress;
 
-            /*
-            mManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
-                @Override
-                public void onSuccess() {
-                    Toast.makeText(getApplicationContext(), "Connected to "+device.deviceName, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(int i) {
-                    Toast.makeText(getApplicationContext(), "Connect failed. Retry.", Toast.LENGTH_SHORT).show();
-                }
-            });*/
             mManager.createGroup(mChannel, new WifiP2pManager.ActionListener() {
                 @Override
                 public void onSuccess() {
@@ -151,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+
 
     WifiP2pManager.ConnectionInfoListener connectionInfoListener = new WifiP2pManager.ConnectionInfoListener() {
         @Override
