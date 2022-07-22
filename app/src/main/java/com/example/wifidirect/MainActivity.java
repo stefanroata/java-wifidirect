@@ -1,6 +1,7 @@
 package com.example.wifidirect;
 
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -14,8 +15,6 @@ import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
-
-
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,9 +22,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -33,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnDiscover, btnSend, btnDisconnect;
     ListView listView;
     TextView read_msg_box, connectionStatus;
-    EditText writeMsg;
+    EditText editText;
 
     // WifiManager wifiManager;
     WifiP2pManager mManager;
@@ -45,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     String[] deviceNameArray;
     WifiP2pDevice[] deviceArray;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         exqListener();
     }
 
+
     private void initialWork() {
         btnDiscover = (Button) findViewById(R.id.discover);
         btnSend = (Button) findViewById(R.id.sendButton);
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.peerListView);
         read_msg_box = (TextView) findViewById(R.id.readMsg);
         connectionStatus = (TextView) findViewById(R.id.connectionStatus);
-        writeMsg = (EditText) findViewById(R.id.writeMsg);
+        editText = (EditText) findViewById(R.id.inputField);
 
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(this, getMainLooper(), null);
@@ -98,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+
 
     @SuppressLint("MissingPermission")
     private void exqListener(){
@@ -155,8 +159,11 @@ public class MainActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
             });
+        });
 
-
+        btnSend.setOnClickListener(v -> {
+            String msg = editText.getText().toString();
+            Log.v("Message: ", Arrays.toString(msg.getBytes()));
         });
     }
 
@@ -166,11 +173,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo wifiP2pInfo) {
             final InetAddress groupOwnerAddress = wifiP2pInfo.groupOwnerAddress;
-            Log.v("group formed? ", ""+wifiP2pInfo.groupFormed);
+            Log.v("group formed? ", "" + wifiP2pInfo.groupFormed);
 
             if (wifiP2pInfo.groupFormed && wifiP2pInfo.isGroupOwner){
                 connectionStatus.setText("Host/Server");
-
                 String stringGroupOwnerAddress = (String) groupOwnerAddress.getHostAddress();
                 Log.v("GO Address: ", stringGroupOwnerAddress);
             }
@@ -190,5 +196,4 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         unregisterReceiver(mReceiver);
     }
-
 }

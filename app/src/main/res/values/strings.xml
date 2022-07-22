@@ -7,4 +7,5 @@
     <string name="connection_status">Connection Status</string>
     <string name="discover_peers">Discover Peers</string>
     <string name="disconnect">Disconnect</string>
+    <string name="write_your_message_here">Write your message here</string>
 </resources>

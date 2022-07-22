@@ -58,7 +58,7 @@
         android:textStyle="italic" />
 
     <EditText
-        android:id="@+id/writeMsg"
+        android:id="@+id/inputField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -66,8 +66,9 @@
         android:layout_toStartOf="@+id/sendButton"
         android:autofillHints="write your message here"
         android:ems="10"
+        android:hint="@string/write_your_message_here"
         android:inputType="textPersonName"
-        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+        tools:ignore="LabelFor,SpeakableTextPresentCheck,TextContrastCheck" />
 
     <Button
         android:id="@+id/sendButton"
