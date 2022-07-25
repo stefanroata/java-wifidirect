@@ -10,9 +10,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
-    private WifiP2pManager mManager;
-    private WifiP2pManager.Channel mChannel;
-    private MainActivity mActivity;
+    private final WifiP2pManager mManager;
+    private final WifiP2pManager.Channel mChannel;
+    private final MainActivity mActivity;
 
     public WiFiDirectBroadcastReceiver (WifiP2pManager mManager, WifiP2pManager.Channel mChannel, MainActivity mActivity){
         this.mManager = mManager;

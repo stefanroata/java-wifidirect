@@ -22,6 +22,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,16 +59,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initialWork() {
-        btnDiscover = (Button) findViewById(R.id.discover);
-        btnSend = (Button) findViewById(R.id.sendButton);
-        btnDisconnect = (Button) findViewById(R.id.btnDisconnect);
-        listView = (ListView) findViewById(R.id.peerListView);
-        read_msg_box = (TextView) findViewById(R.id.readMsg);
-        connectionStatus = (TextView) findViewById(R.id.connectionStatus);
-        editText = (EditText) findViewById(R.id.inputField);
+        btnDiscover = findViewById(R.id.discover);
+        btnSend = findViewById(R.id.sendButton);
+        btnDisconnect = findViewById(R.id.btnDisconnect);
+        listView = findViewById(R.id.peerListView);
+        read_msg_box = findViewById(R.id.readMsg);
+        connectionStatus = findViewById(R.id.connectionStatus);
+        editText = findViewById(R.id.inputField);
 
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(this, getMainLooper(), null);
+
 
         mReceiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, this);
         mIntentFilter = new IntentFilter();
@@ -177,8 +181,13 @@ public class MainActivity extends AppCompatActivity {
 
             if (wifiP2pInfo.groupFormed && wifiP2pInfo.isGroupOwner){
                 connectionStatus.setText("Host/Server");
-                String stringGroupOwnerAddress = (String) groupOwnerAddress.getHostAddress();
+                String stringGroupOwnerAddress = groupOwnerAddress.getHostAddress();
                 Log.v("GO Address: ", stringGroupOwnerAddress);
+                try {
+                    new ServerAsyncTask(8888).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             else if (wifiP2pInfo.groupFormed){
                 connectionStatus.setText("Client");
