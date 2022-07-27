@@ -3,8 +3,6 @@ package com.example.wifidirect;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -22,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -131,12 +128,12 @@ public class MainActivity extends AppCompatActivity {
                                 mManager.removeGroup(mChannel, new WifiP2pManager.ActionListener() {
                                     @Override
                                     public void onSuccess() {
-                                        Log.d("Removed current group? ", "SUCCESS");
+                                        Log.v("Removed current group? ", "SUCCESS");
                                     }
 
                                     @Override
                                     public void onFailure(int reason) {
-                                        Log.d("Removed current group? ", "FAILURE - " + reason);
+                                        Log.v("Removed current group? ", "FAILURE - " + reason);
                                     }
                                 });
                             }
@@ -184,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 String stringGroupOwnerAddress = groupOwnerAddress.getHostAddress();
                 Log.v("GO Address: ", stringGroupOwnerAddress);
                 try {
-                    new ServerAsyncTask(8888).execute();
+                    new ServerAsyncTask(5000).execute();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
